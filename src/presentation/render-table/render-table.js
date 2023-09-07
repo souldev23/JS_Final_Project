@@ -1,4 +1,4 @@
-import usersStore from '../../store/users-store';
+import usersStore from '../../store/users-store'
 import './render-table.css';
 
 let table;

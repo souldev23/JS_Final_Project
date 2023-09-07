@@ -6,7 +6,7 @@ import { User } from "../models/user";
  * @param {Number} page 
  * @returns {Promise<User[]>}
  */
-export const loadUsersByPage = async(page = 1) => {
+export const loadUsersByPage = async(page) => {
     const base = import.meta.env.VITE_BASE_URL;    
     const url = `${base}/users?_page=${page}`;
     const res = await fetch(url);
