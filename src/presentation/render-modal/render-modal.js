@@ -9,9 +9,16 @@ export const showModal = () => {
 
 export const hideModal = () => {
     modal?.classList.add('hidden-modal');
+    form?.reset();
 }
 
-export const renderModal = (element) => {
+/**
+ * 
+ * @param {HTMLDivElement} element 
+ * @param {(userLike)=> Promise<void>} callback 
+ * @returns 
+ */
+export const renderModal = (element, callback) => {
 
     if(modal) return;
 
@@ -29,9 +36,27 @@ export const renderModal = (element) => {
         hideModal();
     });
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async(event) => {
         event.preventDefault();
-        console.log("Formulario enviado");
+        
+        const formData = new FormData( form );
+        const userLike = {};
+        for(const [key, value] of formData){            
+            if(key === 'balance'){
+                userLike[key] = Number(value);
+                continue;
+            }
+            if(key === 'isActive'){
+                userLike[key] = (value === 'on') ? true : false;
+                continue;
+            }
+            userLike[key] = value;
+        }
+        if(!userLike.isActive) userLike['isActive'] = false;
+        
+        await callback(userLike);
+
+        hideModal();
     });
 
 }
